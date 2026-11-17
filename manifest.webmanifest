@@ -1,0 +1,13 @@
+{
+  "name": "Mater Academy",
+  "short_name": "Mater Academy",
+  "description": "Plataforma de estudos da Mater Tecnologia",
+  "start_url": "./",
+  "display": "standalone",
+  "background_color": "#f3f4f7",
+  "theme_color": "#111a2e",
+  "lang": "pt-BR",
+  "icons": [
+    { "src": "icon.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" }
+  ]
+}

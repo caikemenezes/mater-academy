@@ -1,0 +1,327 @@
+// Mater Academy — grade de formação (versão 2, 17/11/2026).
+// Objetivo: engenheiro de IA aplicada, integrando IA dentro de empresas (Mater Tecnologia),
+// depois formação completa de desenvolvedor até cibersegurança.
+// As aulas (vídeos) NÃO ficam aqui: entram pelo editor do site e são sincronizadas.
+//
+// Cada módulo: id, code (número exibido), t (título), area, topics, entrega, ref,
+// e opcionalmente: horas, aulas (roteiro em ordem), pratica, crit (critério de "aprendi").
+
+const M = (id, code, t, area, topics, entrega, ref, extra = {}) => ({ id, code, t, area, topics, entrega, ref, ...extra });
+
+export const BLOCKS = [
+  {
+    id: "f0", n: "00", t: "Preparação", short: "Preparação",
+    goal: "Método de estudo, ambiente, Git e inglês técnico. Pode correr em paralelo com a Fase 1.",
+    deliverable: "Ambiente pronto e primeiro repositório no GitHub",
+    modules: [
+      M("f0m1", "0.1", "Como estudar", "Método", "Recordação ativa, prática antes do vídeo, revisão, IA como professora, rotina",
+        "Rotina semanal definida e primeira semana registrada na Mater Academy", "Mater Academy"),
+      M("f0m2", "0.2", "Ambiente e terminal", "Ferramentas", "VS Code, extensões, terminal, pastas e caminhos, instalar Python e Node",
+        "Ambiente instalado e testado", "VS Code Docs"),
+      M("f0m3", "0.3", "Git e GitHub", "Ferramentas", "Commits, branches, merge, README, .gitignore, GitHub",
+        "Primeiro repositório publicado com README", "Git Book"),
+      M("f0m4", "0.4", "Inglês técnico (contínuo)", "Idioma", "Vocabulário de documentação, ler docs de IA, tradução assistida",
+        "Ler uma página de documentação de IA e resumir em português", "Docs oficiais"),
+    ],
+  },
+  {
+    id: "f1", n: "01", t: "Entender a IA", short: "Entender a IA", priority: true,
+    goal: "Entender como a IA funciona, usá-la com método e saber explicar a um dono de empresa onde ela ajuda e onde erra. Sem programar.",
+    deliverable: "Mapa de oportunidades da impermeabilizadora + biblioteca de prompts",
+    modules: [
+      M("f1m1", "1.1", "Como a IA funciona", "IA", "LLM, tokens, contexto, temperatura, alucinação, limites, modelos, multimodal, embeddings",
+        "Vídeo seu de 1 a 2 min: \"como a IA funciona\"", "Anthropic / Google / OpenAI docs", {
+          horas: 8,
+          aulas: [
+            "IA, Machine Learning, Deep Learning e IA generativa: a diferença",
+            "O que é um LLM: prever a próxima palavra; como é treinado (pré-treino, ajuste fino, avaliação humana)",
+            "Tokens: os pedaços de texto que a IA lê; custo e limite",
+            "Janela de contexto: a memória de curto prazo; por que esquece em conversas longas",
+            "Temperatura: criatividade × consistência",
+            "Alucinação: por que inventa e como reduzir (fonte, citação, permitir \"não sei\")",
+            "Limites: data de corte, contas exatas, fatos recentes; ferramentas que ajudam",
+            "Os modelos: Claude, GPT, Gemini, Llama; abertos × fechados; custo × velocidade",
+            "IA multimodal: imagem, áudio e documentos",
+            "Embeddings (só a ideia): significado virando números — base do RAG",
+          ],
+          pratica: "Contar tokens num tokenizador; mesmo pedido com temperaturas diferentes; provocar uma alucinação e corrigir dando a fonte.",
+          crit: "Explicar sem jargão, em 2 minutos, como a IA funciona e por que às vezes erra.",
+          // [tópico (índice em aulas), id do YouTube, duração, canal, título, tipo]
+          // tipo: "p" principal · "a" aprofundar (opcional) · "en" bônus em inglês (legenda)
+          // Selecionados em 17/11/2026: idioma do áudio conferido; conteúdo ainda não assistido.
+          videos: [
+            [0, "JIKj_UikT0c", "7:44", "Sandeco", "LLM, Machine Learning e Deep Learning: qual a real diferença?", "p"],
+            [0, "31HFCW5DuqI", "18:26", "Curso em Vídeo", "IAs generativas: matemática, metáforas e mitos", "a"],
+            [1, "_cLTcLQN88Q", "24:20", "Rocketseat", "Como um LLM realmente funciona", "p"],
+            [1, "dqTZCknuctk", "18:39", "Curso em Vídeo", "LLM: a tecnologia por trás da IA textual", "a"],
+            [1, "LPZh9BOjkQs", "7:58", "3Blue1Brown", "Large Language Models explained briefly", "en"],
+            [2, "JfJJIrOhWwQ", "18:38", "Curso em Vídeo", "Tokens: a base da linguagem para a IA", "p"],
+            [3, "HuO2KeW2es4", "5:20", "Inteligência Mil Grau", "O que são tokens? O que é janela de contexto?", "p"],
+            [3, "A--kJwf71bo", "12:12", "Lex Máquina", "Entendendo a janela de contexto", "a"],
+            [4, "Qvx7IB7K91w", "12:24", "Peterson Alves", "Parâmetros Top-P, Top-K e Temperatura", "p"],
+            [5, "1OG5LJ8iA80", "11:57", "Sandeco", "Por que a IA inventa mentiras? Alucinação", "p"],
+            [5, "IWzw87I6TqE", "12:39", "Curso em Vídeo", "Desvendando falhas dos LLMs: verifique suas fontes", "a"],
+            [6, "v1zYwUWScr4", "15:08", "Curso em Vídeo", "Armadilhas matemáticas em modelos de IA", "p"],
+            [6, "YY3MmQltQbk", "15:37", "Curso em Vídeo", "Desafios das inteligências artificiais", "a"],
+            [7, "L9ONBR84_c0", "19:01", "Maestros da IA", "ChatGPT vs Claude vs Gemini: qual a melhor opção?", "p"],
+            [7, "WrJBJsb5IDc", "16:41", "Curso em Vídeo", "Rode modelos de IA direto no seu PC (modelos abertos)", "a"],
+            [8, "dBXpIFIj9fk", "3:24", "NVIDIA Latinoamérica", "VLMs: a IA que entende imagens e textos juntos", "p"],
+            [9, "ygRurMXa5uw", "12:24", "DataStax Developers", "Embeddings e busca vetorial para IA generativa", "p"],
+            [9, "wjZofJX0v4M", "27:14", "3Blue1Brown", "Transformers, the tech behind LLMs", "en"],
+          ],
+        }),
+      M("f1m2", "1.2", "Ferramentas de IA", "IA", "Claude, ChatGPT, Gemini, projetos, NotebookLM, pesquisa, documentos, áudio",
+        "Tabela comparando 5 tarefas reais da impermeabilizadora em 3 ferramentas", "Docs das ferramentas", {
+          horas: 6,
+          aulas: [
+            "Claude, ChatGPT e Gemini: o ponto forte de cada um",
+            "Projetos, GPTs e Gems: IA com contexto fixo e seus documentos",
+            "NotebookLM: estudar e pesquisar a partir das suas fontes",
+            "IA para pesquisa com fontes",
+            "IA para documentos, planilhas, imagens e transcrição de áudio",
+            "Planos gratuitos × pagos: o que cada limite significa",
+            "Qual ferramenta usar para cada tarefa",
+          ],
+          pratica: "Rodar as mesmas 5 tarefas da empresa nas 3 ferramentas e anotar qualidade, tempo e limites.",
+          crit: "Escolher a ferramenta certa para uma tarefa e justificar a escolha.",
+          // Selecionados em 17/11/2026 (priorizando 2026: ferramentas mudam rápido). Idioma conferido; não assistidos.
+          // Obs.: o NotebookLM passou a se chamar "Gemini Notebook" em 2026.
+          videos: [
+            [0, "ZaW_5UslfBA", "8:55", "CNN Brasil", "ChatGPT, Claude e Gemini: qual a melhor IA para o seu perfil de uso?", "p"],
+            [0, "R8zzSZTXzb4", "24:26", "Hashtag No Code & IA", "O guia completo do Claude em 2026: os 5 níveis de uso", "a"],
+            [0, "eSEjTeJHgX8", "32:56", "Rodrigo | Inteligência Artificial", "Como usar o ChatGPT em 2026 (curso completo para iniciantes)", "a"],
+            [0, "c54x49cBmd4", "19:07", "Karine Lago", "Aprenda Google Gemini em menos de 20 minutos", "a"],
+            [1, "f615rYyEFro", "12:36", "Prof Ítalo Teotônio", "Projetos no Claude AI: o recurso que muda tudo", "p"],
+            [1, "RWH5ZlFwdo4", "17:33", "Negócios em Mente", "GPTs × Projetos no ChatGPT", "a"],
+            [1, "v6aX4B2GGo0", "15:06", "Karine Lago", "Como usar os Gems no Google Gemini", "a"],
+            [2, "HQFkyIQ4iPI", "17:42", "Karine Lago", "Aprenda Gemini Notebook (NotebookLM) do zero", "p"],
+            [2, "QKa4-0bK5w8", "13:02", "Izabela Anholett", "NotebookLM do zero em 10 minutos", "a"],
+            [3, "AYuNa-HJaD0", "11:30", "Negócios em Mente", "Como usar o Perplexity: pesquisa com fontes", "p"],
+            [3, "dpEqm02JuuA", "6:58", "Luccas Góes", "Deep Research do ChatGPT: pesquisas detalhadas", "p"],
+            [4, "neYs9ukustA", "7:42", "Karine Lago", "Claude no Excel: IA dentro da planilha", "p"],
+            [4, "Tm1iY1CY2Cg", "16:18", "Bruno Picinini", "As melhores IAs de transcrição de áudio", "p"],
+            [4, "-RuI3BIAXno", "20:56", "Curso em Vídeo", "Crie e edite imagens com IA", "a"],
+            [5, "cliccokVSgc", "6:15", "TechTalks | Suzana Araujo", "ChatGPT grátis × Go × Plus: vale a pena?", "p"],
+            [6, "9-hJif2gf84", "17:36", "Gabriel Preuss", "Qual a melhor IA para cada tarefa? Guia 2026", "p"],
+          ],
+        }),
+      M("f1m3", "1.3", "Engenharia de prompt", "IA aplicada", "Anatomia do prompt, papel, exemplos, etapas, tags, prompt de sistema, testes, templates",
+        "Biblioteca de prompts da Mater com casos de teste", "Anthropic Prompt Engineering", {
+          horas: 10,
+          aulas: [
+            "Anatomia de um bom prompt: tarefa, contexto, formato, restrições e exemplo",
+            "Definir o papel da IA e o público da resposta",
+            "Exemplos dentro do prompt (few-shot)",
+            "Dividir tarefas grandes em etapas encadeadas",
+            "Pedir que a IA pense antes de responder",
+            "Separar instrução de conteúdo com marcações (tags)",
+            "Prompt de sistema × mensagem do usuário",
+            "Testar prompts: várias entradas, comparar versões",
+            "Modelos de prompt com variáveis, reutilizáveis",
+            "Erros comuns",
+          ],
+          pratica: "Reescrever 5 prompts ruins até ficarem bons.",
+          crit: "Um prompt seu mantém a mesma qualidade com 10 mensagens diferentes.",
+          // Selecionados em 17/11/2026. Idioma conferido; não assistidos.
+          // Tópicos 4 (encadear) e 6 (tags XML) não têm vídeo bom em português: só inglês com legenda.
+          videos: [
+            [0, "abJe_kV1cJU", "15:57", "Código Fonte TV", "Engenharia de prompt: além da tentativa e erro", "p"],
+            [0, "TwYuO6bsigQ", "11:04", "Adriano Couto", "Engenharia de prompt: tudo que você precisa saber", "a"],
+            [0, "ATp4Q4UD-c8", "14:57", "Curso em Vídeo", "Design de prompt: introdução à engenharia de prompt", "a"],
+            [0, "ysPbXH0LpIE", "24:52", "Anthropic", "Prompting 101 (oficial da Anthropic)", "en"],
+            [1, "Hj39xHVvoj0", "11:24", "Curso em Vídeo", "Prompts de atuação: atribuindo papéis para IAs", "p"],
+            [2, "FylvYZ-_McA", "15:21", "Bruno Lobo Pinheiro", "Zero-shot, one-shot e few-shot", "p"],
+            [3, "sNo3_bBGRng", "11:00", "Dan Cleary", "Prompt chaining for beginners", "en"],
+            [4, "CU9cbg_D8RU", "13:06", "Trybe", "Chain of thought prompting passo a passo", "p"],
+            [4, "CL33cYoS_nA", "14:46", "Kultivi", "Técnicas avançadas: few-shot e chain-of-thought", "a"],
+            [5, "k5WhJfvPF30", "3:13", "Barry Will Fix", "How to use XML tags to get better outputs from Claude", "en"],
+            [6, "0G2jJzHIIMs", "10:13", "Sa e Lucas | AI Builders", "Prompt e system prompt segundo OpenAI, Google e Anthropic", "p"],
+            [6, "-Yc4jGRlDx8", "8:31", "Wouerner", "O que é system prompt (no Gemini)", "a"],
+            [7, "xKWapKyg1U4", "6:26", "André Lug", "Spec antes do prompt: teste real", "p"],
+            [8, "lmCKVvekTSk", "3:45", "IA no Trabalho", "Pare de reescrever prompts: modelos reutilizáveis", "p"],
+            [9, "X51KsjOa41E", "12:24", "PrimoCast", "Como fazer o ChatGPT dar respostas corretas (Sacani)", "p"],
+            [9, "dNLUSahimS8", "8:40", "Sandeco", "Prompt × contexto: a diferença que importa", "a"],
+          ],
+        }),
+      M("f1m4", "1.4", "Respostas organizadas em JSON", "IA aplicada", "JSON, extração, classificação, JSON Schema, dados faltando, validação",
+        "Extrator \"mensagem de WhatsApp → pedido em JSON\" testado com 10 mensagens fictícias", "JSON Schema", {
+          horas: 6,
+          aulas: [
+            "Por que sistemas precisam de dados organizados, e não de texto solto",
+            "JSON do zero: objetos, listas e tipos",
+            "Extração: mensagem livre → campos (nome, endereço, m², serviço)",
+            "Classificação: encaixar o pedido em categorias fixas",
+            "JSON Schema: descrever o formato esperado",
+            "Quando a informação falta: \"não informado\", nunca inventar",
+            "Validar o JSON numa ferramenta online",
+          ],
+          pratica: "Transformar 10 mensagens fictícias de clientes em JSON e validar todas.",
+          crit: "10 mensagens diferentes viram JSON válido sem nenhum dado inventado.",
+        }),
+      M("f1m5", "1.5", "Dados, privacidade e LGPD básica", "Segurança", "Dado pessoal e sensível, para onde vão os dados, anonimizar, LGPD, chaves, riscos",
+        "\"Regras de uso de IA e dados da Mater\" (1 página)", "ANPD / LGPD", {
+          horas: 4,
+          aulas: [
+            "Dado pessoal × dado sensível",
+            "Para onde vai o que você manda para a IA: treinamento, retenção; gratuito × pago × API",
+            "Anonimizar: trocar nome, CPF e telefone antes de enviar",
+            "LGPD essencial: bases legais, consentimento, direitos do titular",
+            "Cuidados com chaves, senhas e acessos",
+            "Primeiros riscos: decidir com resposta errada; a ideia de prompt injection",
+          ],
+          pratica: "Pegar 3 situações reais da empresa e decidir o que pode e o que não pode ir para a IA.",
+          crit: "Olhar um caso real e dizer o que pode e o que não pode ir para uma IA.",
+        }),
+      M("f1m6", "1.6", "Onde a IA ajuda numa empresa", "Negócio", "Tarefas boas e ruins para IA, estimar ganho, humano no controle, casos reais",
+        "Mapa de oportunidades da impermeabilizadora (5 problemas) e escolha do Piloto v1", "Documentação própria", {
+          horas: 6,
+          aulas: [
+            "Tarefas boas para IA: ler, resumir, classificar, extrair, redigir, responder com documentos",
+            "Tarefas ruins para IA: cálculo exato, decisão sem revisão, informação que muda o tempo todo",
+            "Estimar ganho (tempo da tarefa × frequência) sem inventar números",
+            "Humano no controle: onde precisa ter aprovação",
+            "Casos reais de pequenas empresas",
+          ],
+          pratica: "Conversar com a impermeabilizadora e listar as tarefas repetitivas do dia a dia.",
+          crit: "Para cada problema do mapa: o que a IA resolve, o risco, o ganho e a prioridade.",
+        }),
+    ],
+  },
+  {
+    id: "f2", n: "02", t: "Integrar IA sem programação pesada", short: "Integrar IA (n8n)",
+    goal: "Mapear o processo da empresa, entender o encanamento da web e ligar a IA aos sistemas com n8n.",
+    deliverable: "Piloto v1: pedido de orçamento que chega e se organiza sozinho",
+    modules: [
+      M("f2m1", "2.1", "Mapeamento de processos", "Negócio", "Entrevista com o cliente, fluxo atual, gargalos, BPMN simples", "Fluxo atual do orçamento mapeado", "BPMN"),
+      M("f2m2", "2.2", "A web por dentro", "Integrações", "HTTP, APIs, JSON, webhooks, autenticação por chave, Postman/Insomnia", "Testar APIs reais (ex.: ViaCEP) e tratar erros", "MDN"),
+      M("f2m3", "2.3", "n8n: fundamentos", "Automação", "Instalação gratuita, nós, gatilhos, expressões, tratamento de erros", "Primeiro fluxo: formulário → planilha", "n8n Docs"),
+      M("f2m4", "2.4", "IA dentro do n8n", "Automação", "Chamar modelos, extrair dados, classificar, saída em JSON", "Mensagem → IA → dados organizados", "n8n Docs"),
+      M("f2m5", "2.5", "Conectar os sistemas da empresa", "Automação", "WhatsApp, e-mail, Google Sheets, CRM, agenda, notificações", "Aviso automático para a equipe", "n8n Docs"),
+      M("f2m6", "2.6", "Piloto v1: orçamento automático", "Projeto", "Juntar tudo, testar com dados fictícios, medir, apresentar", "Piloto v1 demonstrável + vídeo de demonstração", "Documentação própria"),
+    ],
+  },
+  {
+    id: "f3", n: "03", t: "Engenharia de IA com código", short: "IA com código",
+    goal: "Python voltado para IA, modelos via código, banco de dados e API própria.",
+    deliverable: "Piloto v2: a mesma solução com código próprio",
+    modules: [
+      M("f3m1", "3.1", "Python essencial", "Python", "Lógica em Python: variáveis, condições, laços, funções, listas, dicionários", "20 exercícios + parser de pedidos", "Python Docs"),
+      M("f3m2", "3.2", "Python para dados e integrações", "Python", "Arquivos, JSON, CSV, exceções, módulos, venv, pip, .env, pytest básico", "Pipeline de pedidos com testes", "Python Docs"),
+      M("f3m3", "3.3", "APIs de modelos com Python", "IA aplicada", "SDK, chave segura, streaming, custos, limites, fallback", "Extração com IA feita por código", "Docs Anthropic / Google / OpenAI"),
+      M("f3m4", "3.4", "Validação com Pydantic", "IA aplicada", "Modelos de dados, validação, saídas estruturadas, tratar falhas", "Extrator validado com Pydantic", "Pydantic Docs"),
+      M("f3m5", "3.5", "SQL e PostgreSQL", "Dados", "CRUD, joins, índices, modelagem, transações", "Banco de clientes, solicitações e orçamentos", "PostgreSQL Docs"),
+      M("f3m6", "3.6", "APIs com FastAPI", "Back-end", "Rotas, Pydantic, validação, documentação automática, testes", "API de orçamento com IA", "FastAPI Docs"),
+      M("f3m7", "3.7", "Docker básico", "Infra", "Imagens, containers, volumes, docker compose", "API + banco + n8n rodando com compose", "Docker Docs"),
+      M("f3m8", "3.8", "Piloto v2", "Projeto", "API + IA + banco + n8n + revisão humana", "Piloto v2 com código próprio, demonstrável", "Documentação própria"),
+    ],
+  },
+  {
+    id: "f4", n: "04", t: "IA avançada", short: "IA avançada",
+    goal: "Ferramentas, RAG, agentes, MCP, testes de IA, custos e segurança.",
+    deliverable: "Assistente com fontes + agente com aprovação humana",
+    modules: [
+      M("f4m1", "4.1", "Function calling e ferramentas", "Agentes", "Ferramentas, permissões, validação, limites de ação, aprovação humana", "Assistente que consulta o cadastro", "Docs dos modelos"),
+      M("f4m2", "4.2", "Embeddings e busca semântica", "RAG", "Embeddings, similaridade, chunking, metadados", "Busca em documentos autorizados", "Hugging Face"),
+      M("f4m3", "4.3", "RAG com pgvector", "RAG", "Ingestão, atualização, citações, avaliação", "FAQ com fontes verificáveis", "pgvector"),
+      M("f4m4", "4.4", "Agentes e orquestração", "Agentes", "Estado, memória, planejamento, múltiplas ferramentas, guardrails", "Agente assistivo com revisão humana", "Docs dos modelos"),
+      M("f4m5", "4.5", "MCP e conectores", "Agentes", "Model Context Protocol, servidores, ferramentas, segurança", "Servidor MCP simples da Mater", "modelcontextprotocol.io"),
+      M("f4m6", "4.6", "Avaliação e testes de IA", "Qualidade IA", "Casos de teste, precisão, alucinação, regressão, avaliação humana", "20 casos de teste documentados", "Docs dos modelos"),
+      M("f4m7", "4.7", "Observabilidade e custos", "LLMOps", "Tracing, latência, custos, monitoramento, versões", "Painel de custos e erros", "OpenTelemetry"),
+      M("f4m8", "4.8", "Segurança de IA e LGPD", "Segurança IA", "Prompt injection, vazamento de dados, controle de acesso, retenção", "Checklist de segurança e privacidade", "OWASP LLM Top 10"),
+      M("f4m9", "4.9", "Projeto: assistente de conhecimento Mater", "Projeto", "RAG + agente + testes + logs + segurança", "Assistente com referências e agente com aprovação", "Documentação própria"),
+    ],
+  },
+  {
+    id: "f5", n: "05", t: "Desenvolvedor Full Stack", short: "Full Stack",
+    goal: "Interfaces e sistemas completos para os clientes da Mater.",
+    deliverable: "Painel da Mater: o cliente vê e aprova o que a IA fez",
+    modules: [
+      M("f5m1", "5.1", "HTML, CSS e acessibilidade", "Front-end", "Semântica, responsividade, Flexbox, Grid, acessibilidade", "Página responsiva", "MDN"),
+      M("f5m2", "5.2", "JavaScript", "Front-end", "DOM, escopo, closures, arrays, promises, async/await", "Interface dinâmica de cadastro", "MDN"),
+      M("f5m3", "5.3", "TypeScript", "Front-end", "Tipos, interfaces, generics, narrowing, tsconfig", "Front-end tipado", "TypeScript Docs"),
+      M("f5m4", "5.4", "React", "Front-end", "Componentes, hooks, estado, formulários, roteamento", "Painel de clientes", "React Docs"),
+      M("f5m5", "5.5", "Next.js", "Front-end", "Rotas, renderização, server components, deploy", "Portal da Mater", "Next.js Docs"),
+      M("f5m6", "5.6", "Node.js essencial", "Back-end", "Event loop, módulos, APIs, quando usar Node × Python", "Pequena API em Node", "Node.js Docs"),
+      M("f5m7", "5.7", "Autenticação e autorização", "Back-end", "Sessões, JWT, OAuth, perfis (RBAC), senhas, MFA", "Login com perfis", "OWASP"),
+      M("f5m8", "5.8", "Testes de front e back", "Qualidade", "Unitários, integração, E2E, mocks", "Suíte de testes do painel", "Testing Library"),
+      M("f5m9", "5.9", "Projeto: painel Mater", "Projeto", "Front + API + banco + login + deploy", "Painel da Mater publicado", "Documentação própria"),
+    ],
+  },
+  {
+    id: "f6", n: "06", t: "Engenharia de Software", short: "Eng. de Software",
+    goal: "Fundamentos para que um protótipo vire sistema confiável. Muito conversa com a faculdade de ADS.",
+    deliverable: "Projeto Mater documentado e arquitetado",
+    modules: [
+      M("f6m1", "6.1", "Requisitos e produto", "Engenharia", "Levantamento, casos de uso, histórias, critérios de aceite", "PRD de uma automação", "Atlassian Agile"),
+      M("f6m2", "6.2", "UML e modelagem", "Engenharia", "Diagramas, entidades, sequência, fluxos", "Diagramas do sistema Mater", "PlantUML"),
+      M("f6m3", "6.3", "POO a fundo e estruturas de dados", "Fundamentos", "Classes, herança, composição, async, listas, árvores, hashing, Big O", "Exercícios de estrutura de dados", "CS50"),
+      M("f6m4", "6.4", "Clean Code, SOLID e refatoração", "Engenharia", "Coesão, acoplamento, padrões de refatoração", "Refatorar um módulo do piloto", "Refactoring Guru"),
+      M("f6m5", "6.5", "Design patterns e DDD", "Arquitetura", "Padrões, entidades, agregados, bounded contexts", "Domínio comercial modelado", "Refactoring Guru"),
+      M("f6m6", "6.6", "Arquitetura de software", "Arquitetura", "Camadas, hexagonal, eventos, trade-offs", "Registro de decisão de arquitetura (ADR)", "Microsoft Learn"),
+      M("f6m7", "6.7", "Qualidade e revisão de código", "Qualidade", "Pirâmide de testes, code review, cobertura útil", "Plano de qualidade", "Google Eng Practices"),
+      M("f6m8", "6.8", "Métodos ágeis e documentação", "Gestão", "Scrum, Kanban, backlog, documentação, versionamento", "Backlog e sprint demonstrável", "Atlassian Agile"),
+      M("f6m9", "6.9", "System design e escalabilidade", "Avançado", "Cache, filas, concorrência, resiliência", "Desenho do sistema para 10× o volume", "Microsoft Learn"),
+    ],
+  },
+  {
+    id: "f7", n: "07", t: "Infraestrutura e DevOps", short: "Infra e DevOps",
+    goal: "Colocar os sistemas no ar com segurança, automação e monitoramento.",
+    deliverable: "Deploy automático com monitoramento",
+    modules: [
+      M("f7m1", "7.1", "Linux e redes para desenvolvedores", "Infra", "Shell, permissões, serviços, DNS, TCP/IP", "Servidor Linux de laboratório", "Linux Foundation"),
+      M("f7m2", "7.2", "Docker a fundo", "Infra", "Dockerfile, imagens otimizadas, redes, volumes, compose", "Ambiente completo em containers", "Docker Docs"),
+      M("f7m3", "7.3", "CI/CD e deploy", "DevOps", "Pipelines, ambientes, segredos, GitHub Actions", "Deploy automatizado", "GitHub Docs"),
+      M("f7m4", "7.4", "Nuvem", "DevOps", "Serviços básicos, custos, backup, regiões", "Projeto Mater na nuvem", "Docs do provedor"),
+      M("f7m5", "7.5", "Logs, métricas e performance", "Operação", "Observabilidade, profiling, alertas, SLO", "Aplicação monitorada", "OpenTelemetry"),
+    ],
+  },
+  {
+    id: "f8", n: "08", t: "Cibersegurança defensiva", short: "Cibersegurança",
+    goal: "Proteger aplicações, dados e usuários dos sistemas da Mater.",
+    deliverable: "Auditoria de segurança completa do sistema Mater",
+    modules: [
+      M("f8m1", "8.1", "Fundamentos de segurança e ética", "Segurança", "CIA, risco, ameaças, escopo e autorização", "Inventário de riscos", "OWASP"),
+      M("f8m2", "8.2", "Redes e protocolos", "Redes", "TCP/IP, DNS, TLS, portas, roteamento", "Mapa de rede do laboratório", "Cisco Skills for All"),
+      M("f8m3", "8.3", "Linux e hardening", "Sistemas", "Usuários, permissões, patches, logs, firewall", "Checklist de servidor", "CIS Benchmarks"),
+      M("f8m4", "8.4", "Criptografia e identidade", "Segurança", "Hash, TLS, chaves, MFA, OAuth, gestão de segredos", "Modelo de proteção de credenciais", "OWASP"),
+      M("f8m5", "8.5", "Segurança de aplicações e APIs", "AppSec", "OWASP Top 10, API Top 10, validação, autorização", "Revisão da API Mater", "OWASP"),
+      M("f8m6", "8.6", "Threat modeling e SDLC seguro", "AppSec", "STRIDE, análise de abuso, SAST, dependências", "Modelo de ameaças", "OWASP"),
+      M("f8m7", "8.7", "Análise defensiva de vulnerabilidades", "Segurança", "Varredura autorizada, CVE, correções, verificação", "Relatório do laboratório próprio", "OWASP"),
+      M("f8m8", "8.8", "Logs, incidentes e resposta", "Blue Team", "Detecção, triagem, evidências, recuperação", "Simulação de incidente", "NIST"),
+      M("f8m9", "8.9", "Cloud security e LGPD", "Governança", "IAM, políticas, backups, privacidade, conformidade", "Plano de proteção de dados", "ANPD"),
+      M("f8m10", "8.10", "Projeto final seguro", "Projeto", "Aplicação + IA + controles + testes", "Auditoria do projeto Mater", "OWASP"),
+    ],
+  },
+  {
+    id: "fx", n: "+", t: "Opcionais", short: "Opcionais", optional: true,
+    goal: "Ampliam oportunidades de emprego, mas não são necessários para a Mater.",
+    deliverable: "Conforme o interesse",
+    modules: [
+      M("fxm1", "+1", "C# e .NET", "C#", "C#, LINQ, ASP.NET Core, Entity Framework Core", "API .NET de clientes", "Microsoft Learn"),
+      M("fxm2", "+2", "PHP moderno", "PHP", "Sintaxe, formulários, sessões, POO, PDO, validação", "Mini cadastro seguro em PHP", "PHP Manual"),
+    ],
+  },
+];
+
+// Primeiro ciclo: Fases 0, 1 e 2 em 90 dias (≈10 h/semana).
+export const PLAN90 = [
+  { d: "1–15", t: "Preparação e como a IA funciona", what: "Rotina de estudo montada, ambiente instalado e os fundamentos da IA.", crit: "Explicar como a IA funciona em 2 minutos.", mods: ["f0m1", "f0m2", "f1m1"] },
+  { d: "16–30", t: "Ferramentas e prompts", what: "Dominar as ferramentas e escrever prompts que funcionam sempre.", crit: "Biblioteca de prompts com casos de teste.", mods: ["f1m2", "f1m3"] },
+  { d: "31–45", t: "JSON, dados e oportunidades", what: "IA respondendo em JSON, regras de dados e mapa de oportunidades.", crit: "Piloto v1 escolhido a partir do mapa.", mods: ["f1m4", "f1m5", "f1m6", "f0m3"] },
+  { d: "46–60", t: "Processo e encanamento da web", what: "Processo do orçamento mapeado; APIs, JSON e webhooks na prática.", crit: "Fluxo atual desenhado e APIs testadas.", mods: ["f2m1", "f2m2"] },
+  { d: "61–75", t: "n8n com IA", what: "Automações no n8n com a IA extraindo e classificando pedidos.", crit: "Mensagem → IA → dados organizados funcionando.", mods: ["f2m3", "f2m4", "f2m5"] },
+  { d: "76–90", t: "Piloto v1", what: "Orçamento automático completo, testado com dados fictícios.", crit: "Piloto demonstrável + vídeo de demonstração.", mods: ["f2m6"] },
+];
+
+// Checklist padrão de toda entrega (além do item específico do módulo).
+export const DELIVERY_CHECKS = [
+  "Publicado (GitHub, documento ou link)",
+  "Explicação do problema, da solução e de como usar",
+  "Funciona com dados fictícios ou autorizados",
+  "Demo gravada (até 1 min)",
+  "Limitações e próximos passos anotados",
+];
+
+export const ALL_MODULES = BLOCKS.flatMap(b => b.modules.map(m => ({ ...m, block: b.id })));
+export const moduleById = id => ALL_MODULES.find(m => m.id === id);
+export const blockById = id => BLOCKS.find(b => b.id === id);
