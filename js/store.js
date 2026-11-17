@@ -1,6 +1,7 @@
 // Estado do usuário: salvo no aparelho (localStorage) e, se configurado, sincronizado no Supabase.
 const KEY = "mater-academy:v1";
 const CFG_KEY = "mater-academy:sync";
+const LINK_KEY = "mater-academy:linked-user";
 
 const blank = () => ({
   v: 1,
@@ -94,7 +95,13 @@ export const Sync = {
   listeners: new Set(),
   timer: null,
 
-  cfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY) || "null"); } catch { return null; } },
+  // Projeto Supabase da Mater Academy (chave "anon" é pública por design; a proteção é o RLS da tabela).
+  // Ajustes ainda permite trocar por outro projeto.
+  defaultCfg: {
+    url: "https://yanrqsldcjqywgebrawf.supabase.co",
+    key: "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpc3MiOiJzdXBhYmFzZSIsInJlZiI6InlhbnJxc2xkY2pxeXdnZWJyYXdmIiwicm9sZSI6ImFub24iLCJpYXQiOjE3OTQ5MzYwNjEsImV4cCI6MjExMDUxMjA2MX0.raCDdg6R3FIOwtWYjIdC5kn2Js1R_h7lZTYYd2nvYIM",
+  },
+  cfg() { try { return JSON.parse(localStorage.getItem(CFG_KEY) || "null") || this.defaultCfg; } catch { return this.defaultCfg; } },
   saveCfg(c) { try { c ? localStorage.setItem(CFG_KEY, JSON.stringify(c)) : localStorage.removeItem(CFG_KEY); } catch {} },
   set(status, msg = "") { this.status = status; this.msg = msg; this.listeners.forEach(f => f(status, msg)); },
 
@@ -134,14 +141,21 @@ export const Sync = {
     const { data, error } = await this.client.from("mater_state").select("data, updated_at").eq("user_id", this.user.id).maybeSingle();
     if (error) return this.set("erro", error.message);
     const remote = data?.data;
-    if (remote && (remote.updatedAt || 0) > (state.updatedAt || 0)) {
+    // Aparelho que nunca sincronizou com este usuário: a nuvem sempre vence
+    // (evita que um celular "novo", com dados vazios, apague o progresso do PC).
+    let linked = null; try { linked = localStorage.getItem(LINK_KEY); } catch {}
+    const firstTime = linked !== this.user.id;
+    if (remote && (firstTime || (remote.updatedAt || 0) > (state.updatedAt || 0))) {
       Store.replace(remote, false);
+      this.markLinked();
       this.set("sincronizado");
       window.dispatchEvent(new Event("mater:remote"));
     } else {
       await this.push();
     }
   },
+
+  markLinked() { try { localStorage.setItem(LINK_KEY, this.user.id); } catch {} },
 
   schedulePush() {
     if (!this.client || !this.user) return;
@@ -155,6 +169,7 @@ export const Sync = {
     const { error } = await this.client.from("mater_state").upsert({
       user_id: this.user.id, data: state, updated_at: new Date(state.updatedAt || Date.now()).toISOString(),
     });
+    if (!error) this.markLinked();
     this.set(error ? "erro" : "sincronizado", error?.message || "");
   },
 };

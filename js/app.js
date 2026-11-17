@@ -686,12 +686,14 @@ function viewSettings(el) {
   updated_at timestamptz not null default now()
 );
 alter table public.mater_state enable row level security;
-create policy "cada um lê o seu" on public.mater_state
-  for select using (auth.uid() = user_id);
+revoke all on public.mater_state from anon;
+grant select, insert, update on public.mater_state to authenticated;
+create policy "cada um le o seu" on public.mater_state
+  for select to authenticated using ((select auth.uid()) = user_id);
 create policy "cada um grava o seu" on public.mater_state
-  for insert with check (auth.uid() = user_id);
+  for insert to authenticated with check ((select auth.uid()) = user_id);
 create policy "cada um atualiza o seu" on public.mater_state
-  for update using (auth.uid() = user_id);`;
+  for update to authenticated using ((select auth.uid()) = user_id) with check ((select auth.uid()) = user_id);`;
 
   const paint = () => {
     const st = S(), c = Sync.cfg() || {};
@@ -731,7 +733,7 @@ create policy "cada um atualiza o seu" on public.mater_state
           <label class="field"><span>Chave anon public</span><input id="cKey" required placeholder="eyJ…" value="${esc(c.key || "")}"></label>
           <button class="btn primary">Conectar</button>
         </form>`}
-      ${Sync.client ? `<p class="muted sm"><button class="link-btn" id="unCfg">Desconectar este Supabase</button></p>` : ""}
+      ${Sync.client && localStorage.getItem("mater-academy:sync") ? `<p class="muted sm"><button class="link-btn" id="unCfg">Desconectar este Supabase</button></p>` : ""}
     </section>
 
     <section class="card set">
